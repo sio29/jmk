@@ -1,0 +1,91 @@
+<project name="Build Servlet and JSP" default="all" basedir=".">
+
+  <!-- set property -->
+  <property environment="env"/>
+  <property file="build.properties" />
+
+  <property name="proj"         value="jmk" />
+  <property name="execdir"      value="./exec" />
+  <property name="jardir"       value="./jar" />
+  <property name="data"         value="data" />
+  <property name="classes_sub"  value="classes" />
+  <property name="classes"      value="${execdir}/${classes_sub}" />
+  <property name="src_classes"  value="../class" />
+  <property name="ulib"         value="${src_classes}/sio29/ulib" />
+  <property name="ulib_src"     value="../ulib" />
+  <property name="ulib_jar"     value="${src_classes}/ulib" />
+  <property name="build"        value="./build" />
+  <property name="source"       value="./src" />
+  <property name="htdocs"       value="./htdocs" />
+  <property name="javadoc"      value="./javadoc" />
+  <property name="jarfile"      value="${execdir}/jmk.jar" />
+  <property name="mainname"     value="sio29.jmk.jmk" />
+<!--
+  <property name="teavm_dir"    value="${src_classes}/teavm/ver070" />
+  <property name="teavm_ver"    value="0.7.0" />
+  <property name="teavm_snapshot" value="-SNAPSHOT" />
+-->
+
+  <property file="${ulib_src}/ulib.properties" />
+  <property name="classpath"    value=".;${classpath_ulib};" />
+  <property name="jar_classpath" value="." />
+  <target name="all" depends="init,compile,jar" />
+
+  <!-- Initialize -->
+  <target name="init">
+  </target>
+
+  <!-- compile java sources -->
+  <target name="compile" depends="init">
+    <mkdir dir="${build}" />
+    <javac srcdir="${source}" destdir="${build}"
+    	debug="on" deprecation="off" 
+    	includeAntRuntime="no"
+		excludes="old/**,src/**,data/**,exec/**,com/**,down/**,android/**,upsrc/**"
+    	classpath="${classpath}"
+    	source="${java_ver}"
+    	target="${java_ver}"
+    	encoding="Shift-JIS"
+    >
+	<compilerarg value="-Xlint:unchecked,deprecation" />
+    </javac>
+  </target>
+
+  <!-- make jar -->
+  <target name="jar" >
+    <jar jarfile="${jarfile}" basedir="${build}">
+		<manifest>
+			<attribute name="Main-Class" value="${mainname}"/>
+			<attribute name="Class-Path" value="${jar_classpath}"/>
+		</manifest>
+	</jar>
+  </target>
+
+  <!-- run  -->
+  <target name="run" >
+    <java classname="test">
+    </java>
+  </target>
+
+  <!-- copy jsp sources -->
+  <target name="copy">
+    <copy todir="${build}">
+      <fileset dir="${htdocs}">
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- make javadoc -->
+  <target name="javadoc">
+    <delete dir="${javadoc}" />
+    <mkdir dir="${javadoc}" />
+    <javadoc sourcepath="${source}" packagenames="${PACKAGE}" destdir="${javadoc}" />
+  </target>
+
+  <!-- clean work file -->
+  <target name="clean">
+    <delete dir="${build}" />
+  </target>
+ 
+  
+</project>
