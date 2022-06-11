@@ -1,0 +1,22 @@
+jmk
+
+compiler_type = "win_cpp"
+
+proj_name = "testproj"
+
+source_dir = "src"
+
+build_dir = "build"
+
+output_dir = "output"
+
+output_type = "exe"
+//output_type = "lib"
+
+target = "x64"
+//target = "x86"
+
+debug = 0
+//debug = 1
+
+
